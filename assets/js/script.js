@@ -12,6 +12,8 @@ var taskFormHandler = function(event) {
         return false;
     }
 
+    formEl.reset();
+
     var taskDataObj = {
         name: taskNameInput,
         type: taskTypeInput
