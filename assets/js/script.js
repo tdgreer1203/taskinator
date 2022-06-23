@@ -1,9 +1,9 @@
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
-var taskIdCounter = 0;
 var pageContentEl = document.querySelector("#page-content");
 var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
+var taskIdCounter = 0;
 var taskArray = [];
 
 var taskFormHandler = function(event) {
@@ -174,13 +174,43 @@ var throwItUp = function(tasks) {
         var taskInfoEl = document.createElement("div");
         taskInfoEl.className = "task-info";
         listItemEl.setAttribute("data-task-id", tasks[i].id);
-        taskInfoEl.setAttribute("data-task-id", tasks[i].id);
         taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
 
-        var sectionButtons = createTaskActions(tasks[i].id);
+        var actionContainerEl = document.createElement("div");
+        actionContainerEl.className = "task-actions";
+
+        var editButtonEl = document.createElement("button");
+        editButtonEl.textContent = "Edit";
+        editButtonEl.className = "btn edit-btn";
+        editButtonEl.setAttribute("data-task-id", tasks[i].id);
+
+        var deleteButtonEl = document.createElement("button");
+        deleteButtonEl.textContent = "Delete";
+        deleteButtonEl.className = "btn delete-btn";
+        deleteButtonEl.setAttribute("data-task-id", tasks[i].id);
+
+        var statusSelectEl = document.createElement("select");
+        statusSelectEl.className = "select-status";
+        statusSelectEl.setAttribute("name", "status-change");
+        statusSelectEl.setAttribute("data-task-id", tasks[i].id);
+        var statusChoices = ["To Do", "In Progress", "Completed"];
+        for(var x = 0; x < statusChoices.length; x++) {
+            var statusOptionEl = document.createElement("option");
+            statusOptionEl.textContent = statusChoices[x];
+            statusOptionEl.setAttribute("value", statusChoices[x]);
+            statusSelectEl.appendChild(statusOptionEl);
+        }
+
+        actionContainerEl.appendChild(editButtonEl);
+        actionContainerEl.appendChild(deleteButtonEl);
+        actionContainerEl.appendChild(statusSelectEl);
+
 
         listItemEl.appendChild(taskInfoEl);
-        listItemEl.appendChild(sectionButtons);
+        listItemEl.appendChild(actionContainerEl);
+
+        console.log(tasks[i].status);
+        console.log(i);
 
         if(tasks[i].status === "to do") {
             tasksToDoEl.appendChild(listItemEl);
